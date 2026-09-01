@@ -10,13 +10,17 @@
     + ".bm-dot.red{background:#ff5f57}.bm-dot.yellow{background:#febc2e}.bm-dot.green{background:#28c840}"
     + ".bm-dot:hover{filter:brightness(1.25)}"
     + ".bm-tabrow{display:flex;align-items:center;padding:0 10px;gap:6px}"
-    + ".bm-tab{background:#3a3a3c;color:#e5e5ea;font-size:11.5px;padding:6px 12px;border-radius:7px 7px 0 0;display:flex;align-items:center;gap:6px;max-width:160px}"
+    + ".bm-tab{background:#3a3a3c;color:#e5e5ea;font-size:11.5px;padding:6px 12px;border-radius:7px 7px 0 0;display:flex;align-items:center;gap:6px;max-width:160px;cursor:pointer;opacity:.55}"
+    + ".bm-tab.active{opacity:1}"
     + ".bm-tab .bm-fav{width:7px;height:7px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#8fd3ff,#0a84ff);flex:none}"
     + ".bm-tab .bm-ttl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}"
     + ".bm-addrrow{display:flex;align-items:center;gap:8px;padding:8px 12px 10px}"
     + ".bm-navbtn{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#98989d;font-size:13px;flex:none;cursor:pointer}"
     + ".bm-navbtn:hover{background:rgba(255,255,255,.08)}"
     + ".bm-addr{flex:1;background:#1c1c1e;border-radius:14px;padding:7px 14px;color:#c7c7cc;font-size:12px;display:flex;align-items:center;gap:8px;min-width:0}"
+    + ".bm-addr input{background:transparent;border:none;outline:none;color:#e5e5ea;font-size:12px;flex:1;min-width:0;font-family:inherit}"
+    + ".bm-go{background:#0a84ff;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:500;cursor:pointer;flex:none}"
+    + ".bm-tabpane{display:flex;flex-direction:column;flex:1;min-height:0}"
     + ".bm-addr .bm-url{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;text-align:center}"
     + ".bm-stage{position:relative;flex:1;min-height:0;background:#000}"
     + ".bm-stars{position:absolute;inset:0;display:block}"
@@ -80,7 +84,7 @@
 
     var shooters = [];
     var shooterTimer = null;
-    function spawnShooter() {
+    function addShot() {
       var fromLeft = Math.random() < 0.5;
       var y0 = Math.random() * canvas.height * 0.6;
       var x0 = fromLeft ? -20 : canvas.width + 20;
@@ -93,9 +97,16 @@
         len: 60 + Math.random() * 50,
         life: 1
       });
-      shooterTimer = hostWin.setTimeout(spawnShooter, 4000 + Math.random() * 6000);
     }
-    shooterTimer = hostWin.setTimeout(spawnShooter, 2000 + Math.random() * 4000);
+    function spawnShooter() {
+      addShot();
+      // rare double shooting star
+      if (Math.random() < 0.12) {
+        hostWin.setTimeout(addShot, 150 + Math.random() * 200);
+      }
+      shooterTimer = hostWin.setTimeout(spawnShooter, 2200 + Math.random() * 3200);
+    }
+    shooterTimer = hostWin.setTimeout(spawnShooter, 1200 + Math.random() * 2000);
 
     function onMove(e) {
       var rect = canvas.getBoundingClientRect();
@@ -171,6 +182,11 @@
   }
 
   function chromeShell(opts) {
+    var tabs = (opts.tabs && opts.tabs.length) ? opts.tabs : [opts.title];
+    var tabsHtml = tabs.map(function (t, i) {
+      return '<div class="bm-tab' + (i === 0 ? ' active' : '') + '" data-act="tab" data-idx="' + i + '">'
+        + '<span class="bm-fav"></span><span class="bm-ttl">' + t + '</span></div>';
+    }).join('');
     var wrap = document.createElement('div');
     wrap.className = 'bm-win';
     wrap.innerHTML = ''
@@ -180,7 +196,7 @@
       + '    <span class="bm-dot yellow" data-act="min" title="Minimize"></span>'
       + '    <span class="bm-dot green" data-act="max" title="Maximize"></span>'
       + '  </div>'
-      + '  <div class="bm-tabrow"><div class="bm-tab"><span class="bm-fav"></span><span class="bm-ttl">' + opts.title + '</span></div></div>'
+      + '  <div class="bm-tabrow">' + tabsHtml + '</div>'
       + '  <div class="bm-addrrow">'
       + '    <span class="bm-navbtn">&#8592;</span>'
       + '    <span class="bm-navbtn">&#8594;</span>'
@@ -265,7 +281,7 @@
     win.addEventListener('touchstart', function () { win.style.zIndex = ++zTop; });
 
     injectCSSOnce(document);
-    var shell = chromeShell({ title: opts.title, url: opts.url });
+    var shell = chromeShell({ title: opts.title, url: opts.url, tabs: opts.tabs });
     win.appendChild(shell);
     document.body.appendChild(win);
 
@@ -278,9 +294,20 @@
 
     var minimized = false, lastH = win.style.height, maximized = false, prevRect = null;
     shell.addEventListener('click', function (e) {
-      var act = e.target.getAttribute('data-act');
+      var actEl = e.target.closest('[data-act]');
+      var act = actEl ? actEl.getAttribute('data-act') : null;
       if (!act) return;
       if (act === 'close') { stopStars(); win.remove(); }
+      else if (act === 'tab') {
+        var tabEl = actEl;
+        var idx = tabEl.getAttribute('data-idx');
+        Array.prototype.forEach.call(shell.querySelectorAll('.bm-tab'), function (tb) { tb.classList.remove('active'); });
+        tabEl.classList.add('active');
+        var bodyEl = shell.querySelector('.bm-body');
+        Array.prototype.forEach.call(bodyEl.querySelectorAll(':scope > [data-idx]'), function (p) {
+          p.style.display = (p.getAttribute('data-idx') === idx) ? '' : 'none';
+        });
+      }
       else if (act === 'min') {
         var stage = shell.querySelector('.bm-stage');
         if (!minimized) { lastH = win.style.height; stage.style.display = 'none'; win.style.height = 'auto'; rzHandle.style.display = 'none'; }
@@ -294,35 +321,61 @@
     });
 
     var body = shell.querySelector('.bm-body');
-    bodyBuilder(body, win);
+    bodyBuilder(body, win, shell);
     return win;
   }
 
   // ---------- the editor window ----------
-  createFloatingWindow({ title: 'HTML Sandbox', url: 'about:blank', width: 660, height: 460 }, function (body) {
+  createFloatingWindow({ title: 'HTML Sandbox', url: 'about:blank', width: 660, height: 460, tabs: ['Sandbox', 'Browser'] }, function (body, win, shell) {
     body.id = 'bmSandbox';
     var mobile = window.innerWidth < 640;
     body.innerHTML = ''
-      + '<div class="bm-panes" style="' + (mobile ? 'flex-direction:column' : '') + '">'
-      + '  <div class="bm-pane" style="' + (mobile ? 'border-left:none;border-top:none' : '') + '">'
-      + '    <div class="bm-panehead">Source</div>'
-      + '    <textarea class="bm-code" placeholder="&lt;h1&gt;Hello world&lt;/h1&gt;"></textarea>'
+      + '<div class="bm-tabpane" data-idx="0">'
+      + '  <div class="bm-panes" style="' + (mobile ? 'flex-direction:column' : '') + '">'
+      + '    <div class="bm-pane" style="' + (mobile ? 'border-left:none;border-top:none' : '') + '">'
+      + '      <div class="bm-panehead">Source</div>'
+      + '      <textarea class="bm-code" placeholder="&lt;h1&gt;Hello world&lt;/h1&gt;"></textarea>'
+      + '    </div>'
+      + '    <div class="bm-pane" style="' + (mobile ? 'border-left:none;border-top:1px solid rgba(255,255,255,.08)' : '') + '">'
+      + '      <div class="bm-panehead">Preview</div>'
+      + '      <iframe class="bm-frame"></iframe>'
+      + '    </div>'
       + '  </div>'
-      + '  <div class="bm-pane" style="' + (mobile ? 'border-left:none;border-top:1px solid rgba(255,255,255,.08)' : '') + '">'
-      + '    <div class="bm-panehead">Preview</div>'
-      + '    <iframe class="bm-frame"></iframe>'
+      + '  <div class="bm-actions">'
+      + '    <button class="bm-btn primary" data-act="run-here">Run inline</button>'
+      + '    <button class="bm-btn" data-act="run-window">Open in new window</button>'
       + '  </div>'
       + '</div>'
-      + '<div class="bm-actions">'
-      + '  <button class="bm-btn primary" data-act="run-here">Run inline</button>'
-      + '  <button class="bm-btn" data-act="run-window">Open in new window</button>'
+      + '<div class="bm-tabpane" data-idx="1" style="display:none">'
+      + '  <div class="bm-addrrow" style="padding:10px 12px">'
+      + '    <div class="bm-addr"><input type="text" class="bm-embed-input" value="https://storage.googleapis.com/arctic-games/arctic.html" placeholder="Enter a URL to embed"></div>'
+      + '    <button class="bm-go" data-act="embed-go">Go</button>'
+      + '  </div>'
+      + '  <iframe class="bm-frame bm-embed-frame"></iframe>'
       + '</div>';
 
     var codeEl = body.querySelector('.bm-code');
-    var frameEl = body.querySelector('.bm-frame');
+    var frameEl = body.querySelector('.bm-frame:not(.bm-embed-frame)');
+    var embedInput = body.querySelector('.bm-embed-input');
+    var embedFrame = body.querySelector('.bm-embed-frame');
+    var embedLoaded = false;
+
+    function normalizeUrl(u) {
+      u = u.trim();
+      if (!/^https?:\/\//i.test(u)) u = 'https://' + u;
+      return u;
+    }
+    function loadEmbed() {
+      embedFrame.src = normalizeUrl(embedInput.value);
+      embedLoaded = true;
+    }
+    embedInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') loadEmbed(); });
+    var browserTab = shell.querySelector('.bm-tab[data-idx="1"]');
+    if (browserTab) browserTab.addEventListener('click', function () { if (!embedLoaded) loadEmbed(); });
 
     body.addEventListener('click', function (e) {
       var act = e.target.getAttribute('data-act');
+      if (act === 'embed-go') { loadEmbed(); return; }
       if (!act) return;
       if (act === 'run-here') {
         var d = frameEl.contentDocument;
