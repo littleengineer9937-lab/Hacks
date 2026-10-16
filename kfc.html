@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
     <title>KFC</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,14 +12,8 @@
         .main-content { position:relative; z-index:1; margin-left:0 !important; flex:1; padding:20px 40px; width:100%; box-sizing:border-box; }
         a, a:visited { color:#111 !important; }
         h1 { font-family:'Space Grotesk','Inter',sans-serif; color:#111; text-align:center; font-size:40px; font-weight:700; letter-spacing:.5px; margin-bottom:8px; }
-        #siteH1 .hdr-glyphs { height:44px; width:auto; overflow:visible; vertical-align:middle; }
-        #siteH1 .hdr-glyphs path { fill:none; stroke:currentColor; stroke-width:5; stroke-linecap:butt; stroke-linejoin:miter; }
         .subtext { text-align:center; color:rgba(0,0,0,.55); font-size:14px; margin-bottom:34px; }
-        .live-clock { text-align:center; font-family:'Orbitron',sans-serif; margin:2px 0 22px; }
-        .live-clock-time { font-size:30px; font-weight:700; letter-spacing:9px; color:#111; }
-        body.theme-on .live-clock-time { color:var(--t-accent,#c8102e) !important; }
-        .live-clock-time .lc-dot { opacity:.45; margin:0 8px; }
-        .letter-section { margin-bottom:50px; padding:0 0 26px; max-width:1100px; margin-left:auto; margin-right:auto; min-height:100px; }
+        body.theme-on        .letter-section { margin-bottom:50px; padding:0 0 26px; max-width:1100px; margin-left:auto; margin-right:auto; min-height:100px; }
         .letter-section.empty { opacity:.5; }
         .letter-header { font-family:'Space Grotesk','Inter',sans-serif; position:relative; color:#111 !important; background:transparent !important; font-size:22px; font-weight:600; margin-bottom:22px; padding-bottom:14px; letter-spacing:3px; text-transform:uppercase; }
         .letter-header::after { content:""; position:absolute; left:0; bottom:0; width:100%; height:1px; background:linear-gradient(90deg,rgba(0,0,0,.65) 0%,rgba(0,0,0,.15) 18%,rgba(0,0,0,.03) 45%,transparent 70%); }
@@ -29,8 +24,6 @@
         .fav-star:hover { color:#f5a623; }
         .fav-star.favorited { color:#f5a623; }
         body.theme-on .fav-star.favorited { color:var(--t-accent,#c8102e); }
-        body.theme-nebula .fav-star { background:rgba(255,255,255,.14); color:rgba(243,233,255,.6); }
-        body.theme-nebula .fav-star.favorited { color:#ffd27a; }
         .fav-proxy-btn { width:100%; height:100%; }
         .empty-message { color:rgba(0,0,0,.5) !important; font-style:italic; text-align:center; padding:20px; }
 
@@ -41,9 +34,6 @@
         #introWordmarkHolder svg path { fill:none; stroke:#111; stroke-width:11; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1; animation:introDraw 2.4s cubic-bezier(.3,.9,.3,1) forwards; }
         @keyframes introDraw { to { stroke-dashoffset:0; } }
 
-        #themeTransition { position:fixed; inset:0; z-index:9000; background:#000; display:none; opacity:0; }
-        #themeTransition.active { display:block; }
-        #themeTransition.fade { transition:opacity .45s ease; }
 
         input[type="button"] { position:relative; font-family:'Inter','Space Grotesk',sans-serif; background:#f7f7f7 !important; border:1px solid rgba(0,0,0,.14) !important; padding:18px 20px !important; font-size:14.5px !important; font-weight:500 !important; border-radius:12px !important; cursor:pointer; box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 4px 12px rgba(0,0,0,.08) !important; transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease !important; width:100% !important; max-width:none !important; color:#111 !important; text-align:left; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
         input[type="button"]::before { content:""; position:absolute; top:0; left:-60%; width:40%; height:100%; background:linear-gradient(115deg, transparent 0%, rgba(0,0,0,.05) 45%, rgba(0,0,0,.1) 50%, rgba(0,0,0,.05) 55%, transparent 100%); transform:skewX(-20deg); transition:left .55s ease; pointer-events:none; }
@@ -54,30 +44,13 @@
         .link-row a { color:#111 !important; text-decoration:none; border-bottom:1px solid rgba(0,0,0,.3); padding-bottom:1px; }
         .link-row a:hover { color:#000 !important; border-bottom-color:rgba(0,0,0,.7); }
 
-        .hello-row { text-align:center; color:rgba(0,0,0,.75); font-size:15px; margin-bottom:6px; }
-        .loader-trigger-text { cursor:pointer; font-weight:600; color:#111; border-bottom:1px dashed rgba(0,0,0,.4); }
-        .loader-trigger-text:hover { border-bottom-color:#111; }
 
-        #loaderPanel { position:fixed; top:120px; left:50%; margin-left:-190px; width:380px; z-index:6000; background:#fff; border:1px solid rgba(0,0,0,.2); border-radius:14px; box-shadow:0 20px 50px rgba(0,0,0,.25); display:none; flex-direction:column; overflow:hidden; min-width:260px; min-height:220px; }
-        #loaderPanel.open { display:flex; }
-        .loader-header { background:#f2f2f2; border-bottom:1px solid rgba(0,0,0,.12); padding:10px 14px; font-family:'Inter',sans-serif; font-size:12.5px; font-weight:600; letter-spacing:.5px; color:#111; cursor:move; display:flex; align-items:center; justify-content:space-between; user-select:none; }
-        .loader-close { background:none; border:none; font-size:15px; cursor:pointer; color:#666; line-height:1; padding:0 4px; }
-        .loader-close:hover { color:#000; }
-        .loader-body { padding:12px 14px 14px; display:flex; flex-direction:column; gap:10px; flex:1; min-height:0; }
-        .loader-hint { margin:0; font-family:'Inter',sans-serif; font-size:12px; color:rgba(0,0,0,.55); text-align:center; }
-        .loader-divider { height:1px; background:rgba(0,0,0,.1); margin:2px 0; }
-        .loader-tabname { display:flex; gap:6px; }
-        .loader-tabname input { flex:1; min-width:0; border:1px solid rgba(0,0,0,.15); border-radius:8px; padding:8px 10px; font-family:'Inter',sans-serif; font-size:12.5px; outline:none; }
-        .loader-tabname input:focus { border-color:rgba(0,0,0,.4); }
-        .loader-tabname button { background:#111; color:#fff; border:none; border-radius:8px; padding:8px 14px; font-size:12px; font-weight:600; cursor:pointer; flex:none; }
-        .loader-tabname button:hover { background:#333; }
 
 
         body.theme-on { background:#ffffff !important; }
         body.theme-on h1 { color:var(--t-accent,#c8102e) !important; }
         body.theme-on .letter-header::after { background:linear-gradient(90deg,color-mix(in srgb, var(--t-accent,#c8102e) 85%, transparent) 0%,color-mix(in srgb, var(--t-accent,#c8102e) 15%, transparent) 18%,color-mix(in srgb, var(--t-accent,#c8102e) 3%, transparent) 45%,transparent 70%) !important; }
         body.theme-on .letter-header::before { background:var(--t-accent,#c8102e) !important; box-shadow:0 0 6px 1.5px color-mix(in srgb, var(--t-accent,#c8102e) 70%, transparent) !important; }
-        body.theme-on .loader-trigger-text { border-bottom-color:color-mix(in srgb, var(--t-accent,#c8102e) 60%, transparent) !important; color:var(--t-accent,#c8102e) !important; }
         body.theme-on .link-row a { color:var(--t-accent,#c8102e) !important; border-bottom-color:color-mix(in srgb, var(--t-accent,#c8102e) 40%, transparent) !important; }
         body.theme-on input[type="button"] { border-left:4px solid var(--t-accent,#c8102e) !important; }
         body.theme-on input[type="button"]:hover { border-color:var(--t-accent,#c8102e) !important; color:var(--t-accent,#c8102e) !important; }
@@ -85,70 +58,9 @@
         body.theme-on .search-wrap .search-icon, body.theme-on .search-wrap .search-icon::after { border-color:var(--t-accent,#c8102e); background:var(--t-accent,#c8102e); }
         body.theme-on .search-wrap::before { background:conic-gradient(from 0deg, transparent 0deg, transparent 305deg, color-mix(in srgb, var(--t-accent,#c8102e) 95%, transparent) 335deg, color-mix(in srgb, var(--t-accent,#c8102e) 25%, transparent) 345deg, transparent 360deg) !important; }
 
-        #nebulaBg { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; display:none; background:#120a24; }
-        body.theme-nebula #nebulaBg { display:block; }
-        .neb-blob { position:absolute; width:60vmax; height:60vmax; border-radius:50%; filter:blur(70px); opacity:.55; will-change:transform; }
-        .neb-blob-1 { background:radial-gradient(circle, rgba(142,84,255,.9), transparent 70%); top:-15%; left:-15%; animation:nebDrift1 26s ease-in-out infinite; }
-        .neb-blob-2 { background:radial-gradient(circle, rgba(255,99,196,.8), transparent 70%); top:15%; right:-20%; animation:nebDrift2 32s ease-in-out infinite; }
-        .neb-blob-3 { background:radial-gradient(circle, rgba(74,140,255,.8), transparent 70%); bottom:-20%; left:5%; animation:nebDrift3 30s ease-in-out infinite; }
-        .neb-blob-4 { background:radial-gradient(circle, rgba(255,167,99,.55), transparent 70%); bottom:-15%; right:0; animation:nebDrift4 28s ease-in-out infinite; }
-        @keyframes nebDrift1 { 0%,100% { transform:translate(0,0); } 50% { transform:translate(6vw,4vh); } }
-        @keyframes nebDrift2 { 0%,100% { transform:translate(0,0); } 50% { transform:translate(-5vw,6vh); } }
-        @keyframes nebDrift3 { 0%,100% { transform:translate(0,0); } 50% { transform:translate(4vw,-5vh); } }
-        @keyframes nebDrift4 { 0%,100% { transform:translate(0,0); } 50% { transform:translate(-6vw,-4vh); } }
-        .neb-stars { position:absolute; inset:0; background-image:
-            radial-gradient(1.5px 1.5px at 10% 20%, #fff, transparent),
-            radial-gradient(1px 1px at 30% 70%, #fff, transparent),
-            radial-gradient(1.5px 1.5px at 50% 40%, #fff, transparent),
-            radial-gradient(1px 1px at 70% 15%, #fff, transparent),
-            radial-gradient(1.5px 1.5px at 85% 60%, #fff, transparent),
-            radial-gradient(1px 1px at 15% 85%, #fff, transparent),
-            radial-gradient(1px 1px at 60% 90%, #fff, transparent),
-            radial-gradient(1.5px 1.5px at 90% 30%, #fff, transparent),
-            radial-gradient(1px 1px at 40% 10%, #fff, transparent),
-            radial-gradient(1px 1px at 25% 50%, #fff, transparent);
-            opacity:.6; animation:nebTwinkle 4s ease-in-out infinite alternate; }
-        @keyframes nebTwinkle { from { opacity:.35; } to { opacity:.75; } }
-        @media (prefers-reduced-motion:reduce) { .neb-blob, .neb-stars { animation:none; } }
-        body.theme-nebula { background:#120a24 !important; }
-        body.theme-nebula .main-content { position:relative; z-index:1; }
-        body.theme-nebula h1 { color:#f3e9ff !important; }
-        body.theme-nebula .subtext { color:rgba(243,233,255,.6) !important; }
-        body.theme-nebula .letter-header { color:#f3e9ff !important; }
-        body.theme-nebula .letter-header::after { background:linear-gradient(90deg,rgba(199,138,255,.55) 0%,rgba(199,138,255,.14) 18%,rgba(199,138,255,.03) 45%,transparent 70%) !important; }
-        body.theme-nebula .letter-header::before { background:#c78aff !important; box-shadow:0 0 6px 1.5px rgba(199,138,255,.65) !important; }
-        body.theme-nebula .loader-trigger-text { color:#c78aff !important; border-bottom-color:rgba(199,138,255,.45) !important; }
-        body.theme-nebula .link-row, body.theme-nebula .link-row a { color:#d9c7ff !important; }
-        body.theme-nebula .hello-row { color:rgba(243,233,255,.8) !important; }
-        body.theme-nebula .empty-message { color:rgba(243,233,255,.5) !important; }
-        body.theme-nebula input[type="button"] { background:rgba(255,255,255,.06) !important; border-color:rgba(199,138,255,.25) !important; color:#f3e9ff !important; box-shadow:none !important; }
-        body.theme-nebula input[type="button"]:hover { background:rgba(199,138,255,.14) !important; border-color:rgba(199,138,255,.5) !important; }
-        body.theme-nebula .search-wrap .search-icon, body.theme-nebula .search-wrap .search-icon::after { border-color:#c78aff; background:#c78aff; }
-        body.theme-nebula .search-wrap::before { display:none !important; }
-        body.theme-nebula #searchInput { background:rgba(255,255,255,.07) !important; border-color:rgba(199,138,255,.25) !important; color:#f3e9ff !important; }
-        body.theme-nebula #searchInput::placeholder { color:rgba(243,233,255,.4) !important; }
-        body.theme-nebula .search-suggest { background:#1d1138 !important; border-color:rgba(199,138,255,.25) !important; }
-        body.theme-nebula .suggest-item { color:#f3e9ff !important; }
-        body.theme-nebula .suggest-item:hover, body.theme-nebula .suggest-item.active { background:rgba(199,138,255,.12) !important; }
-        body.theme-nebula #loaderPanel { background:#1d1138 !important; border-color:rgba(199,138,255,.25) !important; }
-        body.theme-nebula .loader-header { background:rgba(199,138,255,.1) !important; border-color:rgba(199,138,255,.2) !important; color:#f3e9ff !important; }
-        body.theme-nebula .loader-hint { color:rgba(243,233,255,.6) !important; }
-        body.theme-nebula .loader-method-btn { background:rgba(199,138,255,.1) !important; border-color:rgba(199,138,255,.25) !important; color:#f3e9ff !important; }
-        body.theme-nebula .loader-tabname input { background:rgba(255,255,255,.06) !important; border-color:rgba(199,138,255,.25) !important; color:#f3e9ff !important; }
-        body.theme-nebula .theme-picker-btn { background:rgba(255,255,255,.06) !important; border-color:rgba(199,138,255,.25) !important; color:#f3e9ff !important; }
-        body.theme-nebula .live-clock-time { color:#f3e9ff !important; }
-
-        .loader-methods { display:flex; flex-wrap:wrap; gap:6px; }
-        .loader-method-btn { flex:1; min-width:calc(50% - 6px); background:#f7f7f7; border:1px solid rgba(0,0,0,.15); color:#111; font-family:'Inter',sans-serif; font-size:11.5px; font-weight:600; padding:8px 6px; border-radius:8px; cursor:pointer; text-align:center; }
-        .loader-method-btn:hover { background:#111; color:#fff; border-color:#111; }
 
 
-        .theme-picker { display:flex; flex-direction:column; gap:4px; max-height:160px; overflow-y:auto; padding-right:2px; }
-        .theme-picker-btn { display:flex; align-items:center; gap:8px; background:#f7f7f7; border:1px solid rgba(0,0,0,.14); border-radius:8px; padding:7px 10px; font-family:'Inter',sans-serif; font-size:12px; font-weight:600; color:#111; cursor:pointer; text-align:left; width:100%; box-sizing:border-box; }
-        .theme-picker-btn:hover { background:#111; color:#fff; border-color:#111; }
-        .theme-picker-btn.active { outline:2px solid #111; outline-offset:-2px; }
-        .loader-resize { position:absolute; right:0; bottom:0; width:16px; height:16px; cursor:nwse-resize; }
-        .loader-resize::before { content:""; position:absolute; right:4px; bottom:4px; width:8px; height:8px; border-right:2px solid rgba(0,0,0,.35); border-bottom:2px solid rgba(0,0,0,.35); }
+
         .search-zone { display:flex; flex-direction:column; align-items:center; gap:14px; margin:0; position:fixed; left:0; right:0; bottom:0; z-index:500; background:transparent; padding:14px 20px 20px; pointer-events:none; }
         .search-zone > * { pointer-events:auto; }
         .main-content { padding-bottom:130px !important; }
@@ -172,41 +84,11 @@
 </head>
 <body>
     <div id="introOverlay"><div id="introWordmarkHolder"></div></div>
-    <div id="themeTransition"></div>
-    <div id="nebulaBg" aria-hidden="true"><div class="neb-blob neb-blob-1"></div><div class="neb-blob neb-blob-2"></div><div class="neb-blob neb-blob-3"></div><div class="neb-blob neb-blob-4"></div><div class="neb-stars"></div></div>
     <div class="sidebar" id="sidebar"></div>
 
-    <div id="loaderPanel">
-        <div class="loader-header" id="loaderHeader">
-            <span>LOADER</span>
-            <button class="loader-close" id="loaderClose" aria-label="Close">&#10005;</button>
-        </div>
-        <div class="loader-body">
-            <p class="loader-hint">Opens this page's own code as a blob: URL.</p>
-            <div class="loader-methods">
-                <button class="loader-method-btn" data-method="blob">blob:</button>
-            </div>
-            <div class="loader-divider"></div>
-            <p class="loader-hint">Rename this tab</p>
-            <div class="loader-tabname">
-                <input type="text" id="tabNameInput" placeholder="New tab name">
-                <button id="tabNameApply">Set</button>
-            </div>
-            <div class="loader-divider"></div>
-            <p class="loader-hint">Pick a theme</p>
-            <div class="theme-picker" id="themePicker"></div>
-        </div>
-        <div class="loader-resize" id="loaderResize"></div>
-    </div>
     <div class="main-content">
         <h1 id="siteH1">KFC</h1>
-        <div class="live-clock" id="liveClock">
-            <div class="live-clock-time"><span class="lc-dot">·</span><span id="liveClockTime">00:00:00</span><span class="lc-dot">·</span></div>
-        </div>
         <p class="subtext">A collection of games, curated and searchable</p>
-        <p class="hello-row">
-            <span id="loaderTrigger" class="loader-trigger-text" title="Open loader menu">Loader</span>
-        </p>
         <div class="search-zone">
             <div class="search-wrap">
                 <span class="search-icon"></span>
@@ -224,6 +106,10 @@
         var holder = document.getElementById('introWordmarkHolder');
         var overlay = document.getElementById('introOverlay');
         if (!holder || !overlay) return;
+        var seen = false;
+        try { seen = localStorage.getItem('kfc_intro_seen') === '1'; } catch (e) {}
+        if (seen) { overlay.classList.add('intro-done'); return; }
+        try { localStorage.setItem('kfc_intro_seen', '1'); } catch (e) {}
         var svg = '<svg viewBox="0 0 130 64" xmlns="http://www.w3.org/2000/svg">'
             + '<g transform="translate(0,0)">'
             + '<path pathLength="1" d="M4,2 L4,62"/>'
@@ -244,21 +130,6 @@
             overlay.classList.add('intro-fade-out');
             setTimeout(function () { overlay.classList.add('intro-done'); }, 700);
         }, 2800);
-    })();
-    </script>
-
-    <script>
-    // Live clock: shows the real, ticking time, updated every second.
-    (function () {
-        var timeEl = document.getElementById('liveClockTime');
-        if (!timeEl) return;
-        function pad(n) { return n < 10 ? '0' + n : '' + n; }
-        function tick() {
-            var now = new Date();
-            timeEl.textContent = pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
-        }
-        tick();
-        setInterval(tick, 1000);
     })();
     </script>
 
@@ -3423,241 +3294,10 @@ var CODE_EDITOR_HTML = "<!DOCTYPE html>\n<html>\n<head>\n<meta charset=\"utf-8\"
     </script>
 
     <script>
-    (function () {
-        var panel = document.getElementById('loaderPanel');
-        var header = document.getElementById('loaderHeader');
-        var trigger = document.getElementById('loaderTrigger');
-
-        // ---- Generic theme engine: UGS Files / KFC. ----
-        // Transition: the whole screen floods with the destination theme's color, then fades
-        // away to reveal it underneath (a full-screen color wash, not a partial bar wipe).
-        var transition = document.getElementById('themeTransition');
-        var animating = false;
-
-        function playThemeTransition(swapFn, color) {
-            if (animating) return;
-            animating = true;
-            transition.classList.remove('fade');
-            transition.style.background = color || '#000';
-            transition.style.opacity = '0';
-            transition.classList.add('active');
-
-            requestAnimationFrame(function () {
-                transition.classList.add('fade');
-                transition.style.opacity = '1';
-            });
-
-            setTimeout(function () {
-                swapFn();
-                transition.style.opacity = '0';
-            }, 450);
-
-            setTimeout(function () {
-                transition.classList.remove('active', 'fade');
-                animating = false;
-            }, 450 + 450 + 60);
-        }
-
-        var THEMES = [
-            { key: 'normal', name: 'UGS Files', accent: null },
-            { key: 'kfc', name: 'KFC', accent: '#c8102e' },
-            { key: 'nebula', name: 'Nebula', accent: null }
-        ];
-
-        var currentThemeKey = 'normal';
-        var siteH1 = document.getElementById('siteH1');
-        // Header lettering: hand-built stencil-style glyphs (header only, not the games or search).
-        var HDR_GLYPHS = {
-            K: { w: 36, d: ['M5,3 L5,57', 'M5,33 L31,3', 'M13,27 L31,57'] },
-            F: { w: 34, d: ['M5,3 L5,57', 'M5,3 L31,3', 'M5,31 L24,31'] },
-            C: { w: 36, d: ['M31,12 Q31,3 18,3 Q8,3 6,20', 'M5,32 Q6,57 18,57 Q31,57 31,48'] },
-            N: { w: 36, d: ['M5,57 L5,3', 'M5,3 L31,57', 'M31,44 L31,3'] },
-            E: { w: 34, d: ['M5,3 L5,57', 'M5,3 L31,3', 'M5,30 L25,30', 'M5,57 L31,57'] },
-            B: { w: 36, d: ['M5,3 L5,57', 'M5,3 L20,3 Q29,3 29,16 Q29,29 20,29 L5,29', 'M12,31 L22,31 Q31,31 31,44 Q31,57 22,57 L5,57'] },
-            U: { w: 36, d: ['M5,3 L5,40 Q5,57 18,57 Q31,57 31,40', 'M31,3 L31,28'] },
-            L: { w: 32, d: ['M5,3 L5,57', 'M5,57 L31,57'] },
-            A: { w: 36, d: ['M3,57 L18,3 L33,57', 'M11,40 L25,40'] },
-            G: { w: 36, d: ['M31,12 Q31,3 18,3 Q5,3 5,30 Q5,57 18,57 Q31,57 31,38', 'M31,36 L19,36'] },
-            S: { w: 36, d: ['M31,10 Q31,3 18,3 Q5,3 5,16 Q5,29 18,30', 'M20,31 Q31,32 31,44 Q31,57 18,57 Q5,57 5,50'] },
-            I: { w: 14, d: ['M7,3 L7,57'] },
-            ' ': { w: 18, d: [] }
-        };
-        function renderHeader(text) {
-            if (!siteH1) return;
-            var x = 0, paths = '', ok = true, up = String(text).toUpperCase();
-            for (var i = 0; i < up.length; i++) {
-                var g = HDR_GLYPHS[up[i]];
-                if (!g) { ok = false; break; }
-                g.d.forEach(function (d) { paths += '<path transform="translate(' + x + ',0)" d="' + d + '"/>'; });
-                x += g.w + 12;
-            }
-            siteH1.setAttribute('aria-label', text);
-            if (!ok) { siteH1.textContent = text; return; }
-            siteH1.innerHTML = '<svg class="hdr-glyphs" viewBox="0 0 ' + Math.max(x - 12, 1) + ' 60" xmlns="http://www.w3.org/2000/svg" role="img">' + paths + '</svg>';
-        }
-
-        var originalTitle = document.title;
-        var originalH1 = siteH1 ? siteH1.textContent : '';
-        renderHeader(originalH1);
-
-        function setThemePickerActive(key) {
-            var picker = document.getElementById('themePicker');
-            if (!picker) return;
-            picker.querySelectorAll('.theme-picker-btn').forEach(function (b) {
-                b.classList.toggle('active', b.getAttribute('data-theme') === key);
-            });
-        }
-
-        function applyThemeNow(key) {
-            document.body.classList.remove('theme-on', 'theme-kfc', 'theme-nebula');
-            document.documentElement.style.removeProperty('--t-accent');
-
-            if (key === 'nebula') {
-                document.body.classList.add('theme-nebula');
-                document.title = 'Nebula';
-                renderHeader('Nebula');
-            } else if (key === 'normal' || !key) {
-                document.title = originalTitle;
-                renderHeader(originalH1);
-            } else {
-                var t = null;
-                for (var i = 0; i < THEMES.length; i++) { if (THEMES[i].key === key) { t = THEMES[i]; break; } }
-                if (!t) { key = 'normal'; document.title = originalTitle; renderHeader(originalH1); }
-                else {
-                    document.body.classList.add('theme-on');
-                    document.documentElement.style.setProperty('--t-accent', t.accent);
-                    document.title = t.name;
-                    renderHeader(t.name);
-                }
-            }
-            currentThemeKey = key;
-            setThemePickerActive(key);
-        }
-
-        function colorForTheme(key) {
-            if (key === 'nebula') return '#1a1033';
-            if (key === 'normal' || !key) return '#ffffff';
-            for (var i = 0; i < THEMES.length; i++) {
-                if (THEMES[i].key === key) return THEMES[i].accent || '#ffffff';
-            }
-            return '#ffffff';
-        }
-
-        function applyTheme(key) {
-            if (key === currentThemeKey) return;
-            playThemeTransition(function () { applyThemeNow(key); }, colorForTheme(key));
-        }
-
-        // Build the theme picker list inside the Hello panel.
-        (function buildThemePicker() {
-            var picker = document.getElementById('themePicker');
-            if (!picker) return;
-            THEMES.forEach(function (t) {
-                var btn = document.createElement('button');
-                btn.type = 'button';
-                btn.className = 'theme-picker-btn';
-                btn.setAttribute('data-theme', t.key);
-                var label = document.createElement('span');
-                label.textContent = t.name;
-                btn.appendChild(label);
-                btn.addEventListener('click', function () { applyTheme(t.key); });
-                picker.appendChild(btn);
-            });
-            setThemePickerActive('normal');
-        })();
-
-        var closeBtn = document.getElementById('loaderClose');
-        var resizeHandle = document.getElementById('loaderResize');
-
-        trigger.addEventListener('click', function () {
-            panel.classList.toggle('open');
-        });
-        closeBtn.addEventListener('click', function () {
-            panel.classList.remove('open');
-        });
-
-        // Drag
-        var dragging = false, dragOffX = 0, dragOffY = 0;
-        header.addEventListener('mousedown', function (e) {
-            dragging = true;
-            var rect = panel.getBoundingClientRect();
-            dragOffX = e.clientX - rect.left;
-            dragOffY = e.clientY - rect.top;
-            panel.style.marginLeft = '0';
-            e.preventDefault();
-        });
-        document.addEventListener('mousemove', function (e) {
-            if (!dragging) return;
-            panel.style.left = (e.clientX - dragOffX) + 'px';
-            panel.style.top = (e.clientY - dragOffY) + 'px';
-        });
-        document.addEventListener('mouseup', function () { dragging = false; });
-
-        // Resize
-        var resizing = false, startW = 0, startH = 0, startX = 0, startY = 0;
-        resizeHandle.addEventListener('mousedown', function (e) {
-            resizing = true;
-            startW = panel.offsetWidth;
-            startH = panel.offsetHeight;
-            startX = e.clientX;
-            startY = e.clientY;
-            e.preventDefault();
-            e.stopPropagation();
-        });
-        document.addEventListener('mousemove', function (e) {
-            if (!resizing) return;
-            panel.style.width = Math.max(260, startW + (e.clientX - startX)) + 'px';
-            panel.style.height = Math.max(220, startH + (e.clientY - startY)) + 'px';
-        });
-        document.addEventListener('mouseup', function () { resizing = false; });
-
-        // Loading methods: all use this page's own code (no pasting needed).
-        // A clean copy is built from the live page so the games list isn't duplicated.
-        function getSource() {
-            var clone = document.documentElement.cloneNode(true);
-            var sc = clone.querySelector('#sections-container');
-            if (sc) sc.innerHTML = '';
-            var p = clone.querySelector('#loaderPanel');
-            if (p) { p.classList.remove('open'); p.removeAttribute('style'); }
-            var si = clone.querySelector('#searchInput');
-            if (si) si.removeAttribute('value');
-            return '<!DOCTYPE html>' + clone.outerHTML;
-        }
-        function escAttr(s) {
-            return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
-        }
-        function openWith(fn) {
-            // window must be opened synchronously inside the click, or popup blockers stop it
-            var w = window.open('about:blank', '_blank');
-            if (!w) return;
-            fn(w, getSource());
-        }
-        var methods = {
-            blob: function () {
-                openWith(function (w, code) {
-                    var url = URL.createObjectURL(new Blob([code], { type: 'text/html' }));
-                    w.location.href = url;
-                });
-            }
-        };
-        panel.querySelectorAll('.loader-method-btn').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                var fn = methods[btn.getAttribute('data-method')];
-                if (fn) fn();
-            });
-        });
-
-        var tabInput = document.getElementById('tabNameInput');
-        var tabApply = document.getElementById('tabNameApply');
-        function applyTabName() {
-            var v = tabInput.value.trim();
-            if (v) document.title = v;
-        }
-        tabApply.addEventListener('click', applyTabName);
-        tabInput.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') applyTabName();
-        });
-    })();
+    // KFC is the only theme.
+    document.body.classList.add('theme-on');
+    document.documentElement.style.setProperty('--t-accent', '#c8102e');
+    document.title = 'KFC';
     </script>
 
     <script>
